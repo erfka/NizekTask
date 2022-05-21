@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="NizekButton">
+        <attr name="nizek_text" format="string" />
+        <attr name="nizek_subText" format="string" />
+        <attr name="nizek_icon" format="color|reference" />
+        <attr name="nizek_backgroundColor" format="color|reference" />
+        <attr name="nizek_tint" format="color" />
+        <attr name="nizek_cornerRadius" format="dimension" />
+    </declare-styleable>
+
+
+    <declare-styleable name="NizekButtonTheme">
+        <attr name="nizekButtonStyle" format="reference"/>
+    </declare-styleable>
+
+</resources>
