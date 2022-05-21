@@ -3,11 +3,21 @@
 
     <declare-styleable name="NizekButton">
         <attr name="nizek_text" format="string" />
+        <attr name="nizek_textSize" format="dimension" />
+        <attr name="nizek_textColor" format="color" />
         <attr name="nizek_subText" format="string" />
+        <attr name="nizek_subTextSize" format="dimension" />
+        <attr name="nizek_subTextColor" format="color" />
         <attr name="nizek_icon" format="color|reference" />
+        <attr name="nizek_iconTint" format="color" />
+<!--        <attr name="nizek_iconWidth" format="dimension" />-->
+<!--        <attr name="nizek_iconHeight" format="dimension" />-->
         <attr name="nizek_backgroundColor" format="color|reference" />
-        <attr name="nizek_tint" format="color" />
+        <attr name="nizek_rippleColor" format="color|reference" />
         <attr name="nizek_cornerRadius" format="dimension" />
+        <attr name="nizek_borderColor" format="color" />
+        <attr name="nizek_borderWidth" format="dimension" />
+        <attr name="nizek_elevation" format="dimension" />
     </declare-styleable>
 
 

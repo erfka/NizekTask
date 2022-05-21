@@ -12,7 +12,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 
 class NizekButton @JvmOverloads constructor(
@@ -21,78 +20,44 @@ class NizekButton @JvmOverloads constructor(
     defStyleAttr: Int = R.attr.nizekButtonStyle
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    private val tvText: TextView
-    private val tvSubText: TextView
-    private val ivIcon: ImageView
+//class NizekButton : ConstraintLayout {
 
-    var text: String = ""
-        set(value) {
-            field = value
-            tvText.text = value
-        }
+    private var manager: DrawManager? = null
 
-    var subText: String? = null
-        set(value) {
-            field = value
-            tvSubText.text = value
-            tvSubText.visibility = if (value.isNullOrEmpty()) View.GONE else View.VISIBLE
-        }
+//    constructor(context: Context) : super(context) {
+//        bind(null, 0)
+//    }
+//
+//    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+//        bind(attrs, 0)
+//    }
+//
+//    constructor(
+//        context: Context,
+//        attrs: AttributeSet?,
+//        defStyleAttr: Int = R.attr.nizekButtonStyle
+//    ) : super(context, attrs, defStyleAttr) {
+//        bind(attrs, defStyleAttr)
+//    }
 
-    var icon: Drawable? = null
-        set(value) {
-            field = value
-            if (value == null) {
-                ivIcon.visibility = View.GONE
-            } else {
-                ivIcon.visibility = View.VISIBLE
-                ivIcon.setImageDrawable(icon)
-            }
-        }
+//     constructor(
+//         context: Context,
+//         attrs: AttributeSet?,
+//         defStyleAttr: Int,
+//         defStyleRes: Int
+//     ) : super(context, attrs, defStyleAttr, defStyleRes)
 
 
     init {
-
         LayoutInflater.from(context).inflate(R.layout.button_nizek, this)
-
-        tvText = findViewById(R.id.tvText)
-        tvSubText = findViewById(R.id.tvSubText)
-        ivIcon = findViewById(R.id.ivIcon)
-
-        val typedArray =
-            context.obtainStyledAttributes(attrs, R.styleable.NizekButton, defStyleAttr, 0)
-        typedArray.getString(R.styleable.NizekButton_nizek_text).let { text = it ?: "" }
-        typedArray.getString(R.styleable.NizekButton_nizek_subText).let { subText = it }
-        typedArray.getDrawable(R.styleable.NizekButton_nizek_icon).let { icon = it }
-
-        typedArray.getDrawable(R.styleable.NizekButton_nizek_icon).let { icon = it }
-
-        val imageTintColor = typedArray.getColor(R.styleable.NizekButton_nizek_tint,0)
-        ImageViewCompat.setImageTintList(ivIcon, ColorStateList.valueOf(imageTintColor))
-
-        val bgColor = typedArray.getColor(R.styleable.NizekButton_nizek_backgroundColor,0)
-
-        val cornerRadius = typedArray.getDimension(R.styleable.NizekButton_nizek_cornerRadius, 0f)
-
-        val sd = StateListDrawable()
-        val statePressed = intArrayOf(android.R.attr.state_pressed)
-        val stateNormal = intArrayOf(android.R.attr.state_enabled)
-
-        val pressed = GradientDrawable()
-        pressed.setColor(Color.RED)
-        pressed.cornerRadius = cornerRadius
-        pressed.shape = GradientDrawable.RECTANGLE
-
-
-        val gd = GradientDrawable()
-        gd.setColor(bgColor)
-        gd.cornerRadius = cornerRadius
-
-        sd.addState(statePressed, pressed)
-        sd.addState(stateNormal, gd)
-        this.background = sd
-
-
-        typedArray.recycle()
+        manager = DrawManager(this, attrs, defStyleAttr)
+        manager?.drawButton()
+        //bind(attrs, defStyleAttr)
     }
+
+//    private fun bind(attrs: AttributeSet?, defStyleAttr: Int) {
+//        manager = DrawManager(this, attrs, defStyleAttr)
+//        manager?.drawButton()
+//    }
 
 }

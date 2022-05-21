@@ -29,13 +29,13 @@
 
 
     <style name="NizekStyle1" >
-        <item name="nizek_tint">@color/btn_tint</item>
+        <item name="nizek_iconTint">@color/btn_tint</item>
         <item name="nizek_backgroundColor">@color/btn_bg</item>
     </style>
 
 
     <style name="NizekStyle2" >
-        <item name="nizek_tint">#000000</item>
+        <item name="nizek_iconTint">#FF0000</item>
         <item name="nizek_backgroundColor">#0399FF</item>
     </style>
 
