@@ -1,7 +1,7 @@
 package com.erfka.nizek.user.presentation
 
-
 import androidx.navigation.fragment.NavHostFragment
+import com.erfka.nizek.base.basefragment.BaseFragmentWithDataBinding
 import com.erfka.nizek.user.R
 import com.erfka.nizek.user.databinding.FragmentRegisterBinding
 

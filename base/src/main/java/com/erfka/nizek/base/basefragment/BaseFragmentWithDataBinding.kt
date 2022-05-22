@@ -1,4 +1,4 @@
-package com.erfka.nizek.user.presentation
+package com.erfka.nizek.base.basefragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
