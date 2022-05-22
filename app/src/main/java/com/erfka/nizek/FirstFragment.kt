@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.erfka.nizek.databinding.FragmentFirstBinding
 
@@ -28,7 +27,8 @@ class FirstFragment : Fragment() {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
 
         binding.btn1.setOnClickListener{
-            Toast.makeText(requireContext(), "test", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(requireContext(), "test", Toast.LENGTH_SHORT).show()
+
         }
 
         return binding.root
