@@ -1,4 +1,4 @@
-package com.erfka.nizek.base.basefragment
+package com.erfka.nizek.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,13 +10,13 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 
 
-abstract class BaseFragmentWithDataBinding<T : ViewDataBinding>(@LayoutRes private val layoutResId: Int) :
+abstract class BaseFragmentWithDataBinding<DB : ViewDataBinding>(@LayoutRes private val layoutResId: Int) :
     Fragment() {
 
-    private var _binding: T? = null
-    val binding: T get() = _binding!!
+    private var _binding: DB? = null
+    val binding: DB get() = _binding!!
 
-    open fun T.initialize() {}
+    open fun DB.initialize() {}
 
     override fun onCreateView(
         inflater: LayoutInflater,

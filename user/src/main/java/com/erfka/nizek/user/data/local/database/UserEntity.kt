@@ -9,5 +9,6 @@ data class UserEntity(
     @PrimaryKey val id: Int = 0,
     val fullName: String,
     val username: String,
-    val modifiedAt: Long
+    //@ColumnInfo(defaultValue = "(strftime('%s', 'now'))")
+    val modifiedAt: Long = System.currentTimeMillis()
 )

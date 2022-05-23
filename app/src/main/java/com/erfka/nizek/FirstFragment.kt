@@ -9,10 +9,12 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.erfka.nizek.databinding.FragmentFirstBinding
 import com.erfka.nizek.user.presentation.UserActivity
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
+@AndroidEntryPoint
 class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null

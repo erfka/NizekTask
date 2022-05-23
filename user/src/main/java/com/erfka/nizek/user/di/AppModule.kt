@@ -2,9 +2,11 @@ package com.erfka.nizek.user.di
 
 import android.app.Application
 import androidx.room.Room
+import com.erfka.nizek.user.data.credential.UserCredentialMangerImplEncryptedSharedPref
 import com.erfka.nizek.user.data.local.database.UserDatabase
 import com.erfka.nizek.user.data.mapper.UserMapper
 import com.erfka.nizek.user.data.repository.UserRepositoryImpl
+import com.erfka.nizek.user.domain.credential.UserCredentialManger
 import com.erfka.nizek.user.domain.repository.UserRepository
 
 import dagger.Module
@@ -31,6 +33,12 @@ object AppModule {
     @Singleton
     fun provideUserRepository(db: UserDatabase): UserRepository {
         return UserRepositoryImpl(db.userDao, UserMapper())
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserCredentialManger(app: Application): UserCredentialManger {
+        return UserCredentialMangerImplEncryptedSharedPref(app)
     }
 
 
