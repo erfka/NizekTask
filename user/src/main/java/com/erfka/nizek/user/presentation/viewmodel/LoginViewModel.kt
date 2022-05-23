@@ -27,8 +27,9 @@ class LoginViewModel @Inject constructor(
 
             val user = getUserByUsernameUseCase.invoke(username)
             if (user != null) {
-                if (userCredentialManger.passwordEnteredCorrectly(username, password)) {
+                if (userCredentialManger.passwordEnteredCorrectly(password)) {
                     insertUserUseCase.invoke(user)
+                    userCredentialManger.saveUsernameAndPassword(username, password)
                     _tryLoginUser.postValue(ResultWrapper.Success("User Logged In Successfully"))
                 } else {
                     wrongCredentials()

@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.erfka.nizek.user.domain.credential.UserCredentialManger
+import com.erfka.nizek.base.CommunicationModel
 import com.erfka.nizek.user.domain.session.UserSessionManager
 
 class UserSessionMangerImplEncryptedSharedPref(private val context: Context) : UserSessionManager {
@@ -27,15 +27,19 @@ class UserSessionMangerImplEncryptedSharedPref(private val context: Context) : U
 
     }
 
-    override fun userIsLoggedIn(username: String, password: String): Boolean =
-        sharedPreferences.getString(username, password) != null
+    override fun userIsLoggedIn(): Boolean {
+        val pw = sharedPreferences.getString("password", "")
+        return pw != null && pw.isNotEmpty()
+    }
+
 
     override fun sessionIsExpired(sessionStartedAt: Long, sessionDuration: Long): Boolean {
         return System.currentTimeMillis() - sessionDuration > sessionStartedAt
     }
 
-    override fun logoutUser(username: String) {
-        sharedPreferences.edit().remove(username).apply()
+    override fun logoutUser() {
+        sharedPreferences.edit().remove("password").apply()
+        CommunicationModel.userModuleListener?.onSuccessfulLogout()
     }
 
 

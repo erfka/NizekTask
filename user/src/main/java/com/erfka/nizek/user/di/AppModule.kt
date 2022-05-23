@@ -6,8 +6,10 @@ import com.erfka.nizek.user.data.credential.UserCredentialMangerImplEncryptedSha
 import com.erfka.nizek.user.data.local.database.UserDatabase
 import com.erfka.nizek.user.data.mapper.UserMapper
 import com.erfka.nizek.user.data.repository.UserRepositoryImpl
+import com.erfka.nizek.user.data.session.UserSessionMangerImplEncryptedSharedPref
 import com.erfka.nizek.user.domain.credential.UserCredentialManger
 import com.erfka.nizek.user.domain.repository.UserRepository
+import com.erfka.nizek.user.domain.session.UserSessionManager
 
 import dagger.Module
 import dagger.Provides
@@ -18,6 +20,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
 
     @Provides
     @Singleton
@@ -39,6 +42,12 @@ object AppModule {
     @Singleton
     fun provideUserCredentialManger(app: Application): UserCredentialManger {
         return UserCredentialMangerImplEncryptedSharedPref(app)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserSessionManager(app: Application): UserSessionManager {
+        return UserSessionMangerImplEncryptedSharedPref(app)
     }
 
 

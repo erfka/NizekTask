@@ -8,7 +8,8 @@ import androidx.security.crypto.MasterKey
 import com.erfka.nizek.user.domain.credential.UserCredentialManger
 
 
-class UserCredentialMangerImplEncryptedSharedPref(private val context: Context) : UserCredentialManger {
+class UserCredentialMangerImplEncryptedSharedPref(private val context: Context) :
+    UserCredentialManger {
 
     private val sharedPreferences: SharedPreferences
 
@@ -29,13 +30,18 @@ class UserCredentialMangerImplEncryptedSharedPref(private val context: Context) 
     }
 
 
-    override fun savePassword(username: String, password: String) {
-        sharedPreferences.edit().putString(username, password).apply()
+    override fun saveUsernameAndPassword(username: String, password: String) {
+        sharedPreferences.edit().putString("username", username).apply()
+        sharedPreferences.edit().putString("password", password).apply()
     }
 
-    override fun passwordEnteredCorrectly(username: String, password: String): Boolean {
-        val pw = sharedPreferences.getString(username, password)
+    override fun passwordEnteredCorrectly(password: String): Boolean {
+        val pw = sharedPreferences.getString("password", password)
         return pw != null && pw == password
+    }
+
+    override fun getUsername(): String {
+        return sharedPreferences.getString("username", "") ?: ""
     }
 
 }

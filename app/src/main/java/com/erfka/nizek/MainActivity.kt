@@ -1,39 +1,84 @@
 package com.erfka.nizek
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
+import com.erfka.nizek.base.Communicate
+import com.erfka.nizek.base.CommunicationModel
 import com.erfka.nizek.databinding.ActivityMainBinding
+import com.erfka.nizek.user.domain.session.UserSessionManager
+import com.erfka.nizek.user.presentation.UserActivity
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), Communicate.WithUserModule {
+
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
+
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+
+
+    @Inject
+    lateinit var userSessionManager: UserSessionManager
+
+
+    companion object {
+
+        fun start(activity: Activity) {
+            activity.startActivity(Intent(activity, MainActivity::class.java))
+        }
+
+        fun start(fragment: Fragment) {
+            fragment.startActivity(Intent(fragment.requireContext(), MainActivity::class.java))
+        }
+    }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+//        if (NizekApplication.applicationContext().showSplash) {
+//            installSplashScreen().setKeepOnScreenCondition {
+//                false
+//            }
+//        }
+
         super.onCreate(savedInstanceState)
+        CommunicationModel.userModuleListener = this
+        settingUpMainActivity()
+    }
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+
+    private fun settingUpMainActivity() {
+        if (!userSessionManager.userIsLoggedIn()) {
+            installSplashScreen()
+            //splashScreen.
+            UserActivity.start(this)
+            finish()
+        } else {
+            setTheme(R.style.AppTheme)
+            setContentView(binding.root)
+            setupViews()
+        }
+    }
+
+    private fun setupViews() {
         setContentView(binding.root)
-
-        setSupportActionBar(binding.toolbar)
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        //setupActionBarWithNavController(navController, appBarConfiguration)
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -56,5 +101,25 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    override fun onSuccessfulLogin() {
+        restartMainActivity()
+    }
+
+    override fun onSuccessfulRegister() {
+    }
+
+    override fun onSuccessfulLogout() {
+        restartMainActivity()
+    }
+
+    private fun restartMainActivity() {
+        val intent = Intent(this, this::class.java)
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_CLEAR_TOP
+        )
+        NizekApplication.applicationContext().showSplash = false
+        startActivity(intent)
     }
 }

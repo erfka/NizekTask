@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.erfka.nizek.base.BaseFragment
+import com.erfka.nizek.base.CommunicationModel
 import com.erfka.nizek.base.ResultWrapper
 import com.erfka.nizek.user.databinding.FragmentLoginBinding
 import com.erfka.nizek.user.presentation.viewmodel.LoginViewModel
@@ -50,7 +51,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 }
                 is ResultWrapper.Success -> {
                     Toast.makeText(context, it.successData, Toast.LENGTH_LONG).show()
-                    //open Main
+
+                    CommunicationModel.userModuleListener?.onSuccessfulLogin()
+
+                    activity?.finish()
+
                 }
                 is ResultWrapper.Error -> {
                     Toast.makeText(context, it.errorMessage, Toast.LENGTH_LONG).show()

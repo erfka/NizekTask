@@ -26,7 +26,7 @@ class RegisterViewModel @Inject constructor(
             _tryRegisterUser.postValue(ResultWrapper.Loading())
 
             if (!userExistsUseCase.invoke(user.username)) {
-                insertUser(user, password)
+                insertUser(user)
             } else {
                 _tryRegisterUser.postValue(ResultWrapper.Error("Username Exists!"))
             }
@@ -34,10 +34,9 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    private fun insertUser(user: User, password: String) {
+    private fun insertUser(user: User) {
         viewModelScope.launch {
             insertUserUseCase.invoke(user)
-            userCredentialManger.savePassword(user.username, password)
             _tryRegisterUser.postValue(ResultWrapper.Success("User Registered Successfully"))
         }
     }

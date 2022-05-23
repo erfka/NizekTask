@@ -9,4 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="btn_tint">#341A76</color>
     <color name="btn_bg">#50BBE3</color>
+
+    <color name="colorBackground">#1B1B20</color>
+    <color name="colorOnBackground">@color/colorOnPrimary</color>
+
+    <color name="colorPrimary">#1B1B20</color>
+    <color name="colorPrimaryVariant">#29292D</color>
+    <color name="colorOnPrimary">@color/white</color>
 </resources>
