@@ -109,6 +109,7 @@ class MainActivity : AppCompatActivity(), Communicate.WithUserModule {
 
     override fun onSuccessfulLogin() {
         restartMainActivity()
+        NizekApplication.applicationContext().loggedOut = false
     }
 
     override fun onSuccessfulRegister() {
