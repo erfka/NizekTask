@@ -3,6 +3,8 @@ package com.erfka.nizek
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +19,9 @@ import com.erfka.nizek.databinding.ActivityMainBinding
 import com.erfka.nizek.user.domain.session.UserSessionManager
 import com.erfka.nizek.user.presentation.UserActivity
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), Communicate.WithUserModule {
@@ -42,7 +46,6 @@ class MainActivity : AppCompatActivity(), Communicate.WithUserModule {
             fragment.startActivity(Intent(fragment.requireContext(), MainActivity::class.java))
         }
     }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,6 +100,7 @@ class MainActivity : AppCompatActivity(), Communicate.WithUserModule {
         }
     }
 
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration)
@@ -111,7 +115,15 @@ class MainActivity : AppCompatActivity(), Communicate.WithUserModule {
     }
 
     override fun onSuccessfulLogout() {
-        restartMainActivity()
+        if (!NizekApplication.applicationContext().loggedOut) {
+            restartMainActivity()
+        } else {
+            finish()
+        }
+
+        NizekApplication.applicationContext().loggedOut = true
+        NizekApplication.applicationContext().timer?.cancel()
+        NizekApplication.applicationContext().timer = null
     }
 
     private fun restartMainActivity() {
@@ -122,4 +134,56 @@ class MainActivity : AppCompatActivity(), Communicate.WithUserModule {
         NizekApplication.applicationContext().showSplash = false
         startActivity(intent)
     }
+
+    //***********************
+
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("timerTag", "onStart()")
+        timerForLogout(30000)
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("timerTag", "onStop()")
+        if (NizekApplication.applicationContext().loggedOut){
+            NizekApplication.applicationContext().timer?.cancel()
+            NizekApplication.applicationContext().timer = null
+            return
+        }
+
+        timerForLogout(10000)
+    }
+
+
+    private fun timerForLogout(millisInFuture: Long) {
+
+        NizekApplication.applicationContext().timer?.cancel()
+        NizekApplication.applicationContext().timer = null
+
+        var n = millisInFuture / 1000
+
+        NizekApplication.applicationContext().timer = object : CountDownTimer(millisInFuture, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                --n
+                Log.d("timerTag", "onTick - $n - ${this.hashCode()}")
+            }
+
+            override fun onFinish() {
+                Log.d("timerTag", "onFinish - $n - ${this.hashCode()}")
+                userSessionManager.logoutUser()
+            }
+        }.start()
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("timerTag", "onDestroy()")
+        //timer?.cancel();
+        //timer = null;
+    }
+
 }
